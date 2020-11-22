@@ -4,4 +4,12 @@ abstract class InspectionContract {
   void onGetInspectionSuccess(List<InspectionResponse> response);
 
   void onGetInspectionError();
+
+  void onDeleteInspectionSuccess();
+
+  void onDeleteInspectionError();
+
+  void onUpdateInspectionSuccess();
+
+  void onUpdateInspectionError();
 }

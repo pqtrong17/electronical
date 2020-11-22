@@ -4,6 +4,7 @@ import 'package:electrical/ui/admin/contract/inspection_contract.dart';
 import 'package:electrical/ui/admin/detail_admin_page.dart';
 import 'package:electrical/ui/admin/presenter/inspection_presenter.dart';
 import 'package:flutter/material.dart';
+import 'package:toast/toast.dart';
 
 class AdminPage extends StatefulWidget {
   @override
@@ -13,6 +14,7 @@ class AdminPage extends StatefulWidget {
 class _AdminPageState extends State<AdminPage> implements InspectionContract {
   InspectionPresenter mPresenter;
   List<InspectionResponse> mInspection;
+  GlobalKey<ScaffoldState> scaffoldKey;
 
   @override
   void initState() {
@@ -20,11 +22,13 @@ class _AdminPageState extends State<AdminPage> implements InspectionContract {
     super.initState();
     mPresenter = InspectionPresenter(this);
     mPresenter.onGetInspection();
+    scaffoldKey = GlobalKey();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: scaffoldKey,
       appBar: AppBar(
         title: Text("ADMIN PAGE"),
         centerTitle: true,
@@ -46,7 +50,8 @@ class _AdminPageState extends State<AdminPage> implements InspectionContract {
             mInspection != null
                 ? Expanded(
                     child: ListView.builder(
-                      itemBuilder: (context, index) => itemWork(mInspection[index]),
+                      itemBuilder: (context, index) =>
+                          itemWork(mInspection[index]),
                       itemCount: mInspection.length,
                     ),
                   )
@@ -62,8 +67,12 @@ class _AdminPageState extends State<AdminPage> implements InspectionContract {
   Widget itemWork(InspectionResponse data) {
     return InkWell(
       onTap: () {
-        Navigator.push(context,
-            MaterialPageRoute(builder: (context) => DetailAdminPage()));
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => DetailAdminPage(
+                      detail: data,
+                    )));
       },
       child: Card(
         child: Padding(
@@ -74,9 +83,10 @@ class _AdminPageState extends State<AdminPage> implements InspectionContract {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(data.title, style: TextStyle(
-                      fontWeight: FontWeight.bold
-                    ),),
+                    Text(
+                      data.title,
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    ),
                     SizedBox(
                       height: 8,
                     ),
@@ -91,7 +101,26 @@ class _AdminPageState extends State<AdminPage> implements InspectionContract {
                     icon: Icon(Icons.edit),
                   ),
                   IconButton(
-                    onPressed: () => print('DELETE'),
+                    onPressed: () {
+                      showDialog(
+                          context: context,
+                          builder: (context) => AlertDialog(
+                                title: Text("Do you want delete?"),
+                                content: Text(
+                                    "This action is not reverse. Continue?"),
+                                actions: [
+                                  FlatButton(
+                                    child: Text("OK"),
+                                    onPressed: () =>
+                                        mPresenter.onDeleteInspection(data.id),
+                                  ),
+                                  FlatButton(
+                                    child: Text("CANCEL"),
+                                    onPressed: () => Navigator.pop(context),
+                                  ),
+                                ],
+                              ));
+                    },
                     icon: Icon(Icons.delete),
                   ),
                 ],
@@ -114,5 +143,32 @@ class _AdminPageState extends State<AdminPage> implements InspectionContract {
     setState(() {
       mInspection = response;
     });
+  }
+
+  @override
+  void onDeleteInspectionError() {
+    // TODO: implement onDeleteInspectionError
+    Toast.show("Delete error", context);
+  }
+
+  @override
+  void onDeleteInspectionSuccess() {
+    // TODO: implement onDeleteInspectionSuccess
+    Navigator.pop(context);
+    // Toast.show("Delete success", context);
+    scaffoldKey.currentState.showSnackBar(SnackBar(
+      content: Text("Delete success!"),
+      duration: Duration(seconds: 3),
+    ));
+  }
+
+  @override
+  void onUpdateInspectionError() {
+    // TODO: implement onUpdateInspectionError
+  }
+
+  @override
+  void onUpdateInspectionSuccess() {
+    // TODO: implement onUpdateInspectionSuccess
   }
 }

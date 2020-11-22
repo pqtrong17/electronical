@@ -13,5 +13,8 @@ class NetworkConfig {
   }
 
   static const String GET_ALL_INSPECTION_ENDPOINT = "/admin/getinspection";
+  static const String DELETE_INSPECTION_ENDPOINT = "/admin/deleteinspect/";
+  static const String UPDATE_INSPECTION_ENDPOINT = "/admin/updateinspect";
   static const String LOGIN_ENDPOINT = "/auth/login";
+  static const String GET_WORK_BY_INSPECTION_ENDPOINT = "/owner/getworkwdetailsbyinspectionid";
 }
