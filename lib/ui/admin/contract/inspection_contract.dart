@@ -12,4 +12,8 @@ abstract class InspectionContract {
   void onUpdateInspectionSuccess();
 
   void onUpdateInspectionError();
+
+  void onInsertInspectionSuccess();
+
+  void onInsertInspectionError();
 }

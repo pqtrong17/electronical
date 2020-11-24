@@ -171,4 +171,14 @@ class _AdminPageState extends State<AdminPage> implements InspectionContract {
   void onUpdateInspectionSuccess() {
     // TODO: implement onUpdateInspectionSuccess
   }
+
+  @override
+  void onInsertInspectionError() {
+    // TODO: implement onInsertInspectionError
+  }
+
+  @override
+  void onInsertInspectionSuccess() {
+    // TODO: implement onInsertInspectionSuccess
+  }
 }

@@ -2,7 +2,9 @@ import 'dart:convert';
 
 import 'package:electrical/data/network/network_config.dart';
 import 'package:electrical/data/repositories/inspection_repository.dart';
+import 'package:electrical/data/request/insert_inspection_request.dart';
 import 'package:electrical/data/request/update_inspection_request.dart';
+import 'package:electrical/data/request/update_status_request.dart';
 import 'package:electrical/data/response/inspection_response.dart';
 import 'package:http/http.dart' as http;
 
@@ -40,6 +42,30 @@ class InspectionRepositoryImpl implements InspectionRepository {
         NetworkConfig.SERVER_URL + NetworkConfig.UPDATE_INSPECTION_ENDPOINT,
         body: body,
         headers: header);
-    return null;
+    return;
+  }
+
+  @override
+  Future onInsertInspection(InsertInspectionRequest request) async {
+    // TODO: implement onInsertInspection
+    final header = await NetworkConfig.getAuthorizationHeader();
+    final body = request.toJson();
+    final responseJson = await http.post(
+        NetworkConfig.SERVER_URL + NetworkConfig.INSERT_INSPECTION_ENDPOINT,
+        body: body,
+        headers: header);
+    return;
+  }
+
+  @override
+  Future onUpdateStatus(UpdateStatusRequest request) async {
+    // TODO: implement onUpdateStatus
+    final header = await NetworkConfig.getAuthorizationHeader();
+    final body = request.toJson();
+    final responseJson = await http.post(
+        NetworkConfig.SERVER_URL + NetworkConfig.UPDATE_STATUS_INSPECTION_ENDPOINT,
+        body: body,
+        headers: header);
+    return;
   }
 }
