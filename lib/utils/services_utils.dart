@@ -10,4 +10,14 @@ class ServiceUtils {
     } else
       return "";
   }
+
+  static String formatDateYMD(String dateStr) {
+    var format = "yyyy-MM-dd";
+    if (dateStr != "") {
+      DateTime tempDate = DateTime.parse(dateStr);
+      String dateResponse = DateFormat(format).format(tempDate);
+      return dateResponse;
+    } else
+      return "";
+  }
 }

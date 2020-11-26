@@ -19,4 +19,12 @@ class NetworkConfig {
   static const String GET_WORK_BY_INSPECTION_ENDPOINT = "/owner/getworkwdetailsbyinspectionid";
   static const String INSERT_INSPECTION_ENDPOINT = "/admin/insertinspect";
   static const String UPDATE_STATUS_INSPECTION_ENDPOINT = "/admin/closeinspection";
+  static const String GET_ALL_MEMBERS_ENDPOINT = "/admin/getallmembers";
+  static const String SET_LEVEL_ENDPOINT = "/admin/setadmin";
+  static const String ADD_USER_ENDPOINT = "/admin/adduser";
+  static const String ADD_WORK_DETAIL_ENDPOINT = "/owner/addworkdetail";
+  static const String GET_ALL_WORKS_ENDPOINT = "/owner/getmatchins";
+  static const String UPDATE_PROGRESS_ENDPOINT = "/owner/updateprogress";
+  static const String EDIT_WORK_DETAIL_ENDPOINT = "/member/editworkdetail";
+  static const String GET_ALL_OWNERS = "/noauth/getowners";
 }

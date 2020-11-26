@@ -34,4 +34,5 @@ class InspectionPresenter {
       return contract.onUpdateInspectionError();
     });
   }
+
 }

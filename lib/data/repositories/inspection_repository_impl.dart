@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:electrical/data/network/network_config.dart';
 import 'package:electrical/data/repositories/inspection_repository.dart';
 import 'package:electrical/data/request/insert_inspection_request.dart';
+import 'package:electrical/data/request/set_level_request.dart';
 import 'package:electrical/data/request/update_inspection_request.dart';
 import 'package:electrical/data/request/update_status_request.dart';
 import 'package:electrical/data/response/inspection_response.dart';
@@ -42,6 +43,7 @@ class InspectionRepositoryImpl implements InspectionRepository {
         NetworkConfig.SERVER_URL + NetworkConfig.UPDATE_INSPECTION_ENDPOINT,
         body: body,
         headers: header);
+    print(responseJson.statusCode.toString());
     return;
   }
 
@@ -54,6 +56,7 @@ class InspectionRepositoryImpl implements InspectionRepository {
         NetworkConfig.SERVER_URL + NetworkConfig.INSERT_INSPECTION_ENDPOINT,
         body: body,
         headers: header);
+    print(responseJson.body.toString());
     return;
   }
 
@@ -67,5 +70,17 @@ class InspectionRepositoryImpl implements InspectionRepository {
         body: body,
         headers: header);
     return;
+  }
+
+  @override
+  Future onGetAllUser() {
+    // TODO: implement onGetAllUser
+    throw UnimplementedError();
+  }
+
+  @override
+  Future onSetLevelUser(SetLevelRequest request) {
+    // TODO: implement onSetLevelUser
+    throw UnimplementedError();
   }
 }

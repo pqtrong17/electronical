@@ -1,4 +1,4 @@
-import 'package:electrical/ui/admin/add_work_page.dart';
+import 'package:electrical/ui/admin/add_inspection_page.dart';
 import 'package:electrical/ui/admin/detail_admin_page.dart';
 import 'package:flutter/material.dart';
 
@@ -16,7 +16,7 @@ class _LeaderPageState extends State<LeaderPage> {
         centerTitle: true,
         actions: [
           IconButton(
-            onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => AddWorkPage())),
+            onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => AddInspectionPage())),
             icon: Icon(Icons.add),
           )
         ],

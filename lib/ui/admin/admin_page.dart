@@ -1,8 +1,9 @@
 import 'package:electrical/data/response/inspection_response.dart';
-import 'package:electrical/ui/admin/add_work_page.dart';
+import 'package:electrical/ui/admin/add_inspection_page.dart';
 import 'package:electrical/ui/admin/contract/inspection_contract.dart';
 import 'package:electrical/ui/admin/detail_admin_page.dart';
 import 'package:electrical/ui/admin/presenter/inspection_presenter.dart';
+import 'package:electrical/ui/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:toast/toast.dart';
 
@@ -34,8 +35,13 @@ class _AdminPageState extends State<AdminPage> implements InspectionContract {
         centerTitle: true,
         actions: [
           IconButton(
-            onPressed: () => Navigator.push(context,
-                MaterialPageRoute(builder: (context) => AddWorkPage())),
+            onPressed: () async {
+              bool isReload = await Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => AddInspectionPage()));
+              if(isReload){
+                mPresenter.onGetInspection();
+              }
+            },
             icon: Icon(Icons.add),
           )
         ],
@@ -72,64 +78,109 @@ class _AdminPageState extends State<AdminPage> implements InspectionContract {
             MaterialPageRoute(
                 builder: (context) => DetailAdminPage(
                       detail: data,
+                      isEditable: false,
                     )));
       },
       child: Card(
         child: Padding(
           padding: const EdgeInsets.all(8.0),
-          child: Row(
-            children: [
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      data.title,
-                      style: TextStyle(fontWeight: FontWeight.bold),
-                    ),
-                    SizedBox(
-                      height: 8,
-                    ),
-                    Text(data.description)
-                  ],
+          child: IntrinsicHeight(
+            child: Row(
+              children: [
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        data.title,
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                      SizedBox(
+                        height: 8,
+                      ),
+                      Text(data.description)
+                    ],
+                  ),
                 ),
-              ),
-              Row(
-                children: [
-                  IconButton(
-                    onPressed: () => print('UPDATE'),
-                    icon: Icon(Icons.edit),
+                IntrinsicWidth(
+                  child: Column(
+                    children: [
+                      Container(
+                        width: double.infinity,
+                        padding: EdgeInsets.all(4),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(4),
+                          color: data.status == 1 ? Colors.blue : data.status == 2 ? Colors.red : Colors.green,
+                        ),
+                        alignment: Alignment.center,
+                        child: Text(convertStatus(data.status), style: TextStyle(
+                          color: Colors.white
+                        ),),
+                      ),
+                      Row(
+                        children: [
+                          IconButton(
+                            onPressed: () async {
+                              bool isUpdated = await Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => DetailAdminPage(
+                                        detail: data,
+                                        isEditable: true,
+                                      )));
+                              if(isUpdated){
+                                mPresenter.onGetInspection();
+                              }
+                            },
+                            icon: Icon(Icons.edit),
+                          ),
+                          IconButton(
+                            onPressed: () {
+                              showDialog(
+                                  context: context,
+                                  builder: (context) => AlertDialog(
+                                    title: Text("Do you want delete?"),
+                                    content: Text(
+                                        "This action is not reverse. Continue?"),
+                                    actions: [
+                                      FlatButton(
+                                        child: Text("OK"),
+                                        onPressed: () {
+                                          Navigator.pop(context);
+                                          Utils.showLoadingDialog(context);
+                                          mPresenter.onDeleteInspection(data.id);
+                                        },
+                                      ),
+                                      FlatButton(
+                                        child: Text("CANCEL"),
+                                        onPressed: () => Navigator.pop(context),
+                                      ),
+                                    ],
+                                  ));
+                            },
+                            icon: Icon(Icons.delete),
+                          ),
+                        ],
+                      ),
+                    ],
                   ),
-                  IconButton(
-                    onPressed: () {
-                      showDialog(
-                          context: context,
-                          builder: (context) => AlertDialog(
-                                title: Text("Do you want delete?"),
-                                content: Text(
-                                    "This action is not reverse. Continue?"),
-                                actions: [
-                                  FlatButton(
-                                    child: Text("OK"),
-                                    onPressed: () =>
-                                        mPresenter.onDeleteInspection(data.id),
-                                  ),
-                                  FlatButton(
-                                    child: Text("CANCEL"),
-                                    onPressed: () => Navigator.pop(context),
-                                  ),
-                                ],
-                              ));
-                    },
-                    icon: Icon(Icons.delete),
-                  ),
-                ],
-              )
-            ],
+                )
+              ],
+            ),
           ),
         ),
       ),
     );
+  }
+
+  String convertStatus(int status) {
+    if (status == 1) {
+      return "Pending";
+    }
+    if (status == 2) {
+      return "On Going";
+    }
+    return "Done";
   }
 
   @override
@@ -160,6 +211,7 @@ class _AdminPageState extends State<AdminPage> implements InspectionContract {
       content: Text("Delete success!"),
       duration: Duration(seconds: 3),
     ));
+    mPresenter.onGetInspection();
   }
 
   @override

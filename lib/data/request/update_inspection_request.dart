@@ -2,10 +2,10 @@ class UpdateInspectionRequest {
   String description;
   String endDate;
   String equipmentRequire;
-  int id;
+  String id;
   String lineCondition;
   String lineLocation;
-  int ownerId;
+  String ownerId;
   String startDate;
   String teamId;
   String title;

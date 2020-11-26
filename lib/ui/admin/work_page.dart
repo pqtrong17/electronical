@@ -2,7 +2,7 @@ import 'package:electrical/data/response/work_response.dart';
 import 'package:electrical/ui/admin/contract/work_contract.dart';
 import 'package:electrical/ui/admin/presenter/work_presenter.dart';
 import 'package:flutter/material.dart';
-
+import 'package:percent_indicator/linear_percent_indicator.dart';
 class WorkPage extends StatefulWidget {
   final int inspectionId;
 
@@ -29,16 +29,25 @@ class _WorkPageState extends State<WorkPage> implements WorkContract {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: Text("WORK OF INSPECTION", style: TextStyle(
-          fontWeight: FontWeight.bold
-        ),),
+        title: Text(
+          "WORKS OF INSPECTION",
+          style: TextStyle(fontWeight: FontWeight.bold),
+        ),
       ),
       body: SafeArea(
         child: mWork != null
-            ? ListView.builder(
-                itemBuilder: (context, index) => itemWork(mWork.data[index]),
-                itemCount: mWork.data.length,
-              )
+            ? mWork.data != null && mWork.data.length != 0
+                ? ListView.builder(
+                    itemBuilder: (context, index) =>
+                        itemWork(mWork.data[index]),
+                    itemCount: mWork.data.length,
+                  )
+                : Center(
+                    child: Text("No data!", style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w500
+                    ),),
+                  )
             : Center(
                 child: CircularProgressIndicator(),
               ),
@@ -54,31 +63,35 @@ class _WorkPageState extends State<WorkPage> implements WorkContract {
           child: Row(
             children: [
               Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      data.title,
-                      style: TextStyle(fontWeight: FontWeight.bold),
-                    ),
-                    SizedBox(
-                      height: 8,
-                    ),
-                    Text(data.description ?? "(No description)")
-                  ],
+                flex: 3,
+                child: Container(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        data.title,
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                      SizedBox(
+                        height: 8,
+                      ),
+                      Text(data.description ?? "(No description)")
+                    ],
+                  ),
                 ),
               ),
-              Row(
-                children: [
-                  IconButton(
-                    onPressed: () => print('UPDATE'),
-                    icon: Icon(Icons.edit),
-                  ),
-                  IconButton(
-                    onPressed: () => print('DELETE'),
-                    icon: Icon(Icons.delete),
-                  ),
-                ],
+              Expanded(
+                flex: 1,
+                child: Column(
+                  children: [
+                    LinearPercentIndicator(
+                      lineHeight: 10,
+                      percent: data.progress.toDouble()/100,
+                      progressColor: Colors.green,
+                    ),
+                    Text(data.progress.toString() + "%")
+                  ],
+                ),
               )
             ],
           ),
