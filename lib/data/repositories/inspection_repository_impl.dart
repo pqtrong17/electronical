@@ -66,7 +66,7 @@ class InspectionRepositoryImpl implements InspectionRepository {
     final header = await NetworkConfig.getAuthorizationHeader();
     final body = request.toJson();
     final responseJson = await http.post(
-        NetworkConfig.SERVER_URL + NetworkConfig.UPDATE_STATUS_INSPECTION_ENDPOINT,
+        NetworkConfig.SERVER_URL + NetworkConfig.CLOSE_STATUS_INSPECTION_ENDPOINT,
         body: body,
         headers: header);
     return;
@@ -82,5 +82,27 @@ class InspectionRepositoryImpl implements InspectionRepository {
   Future onSetLevelUser(SetLevelRequest request) {
     // TODO: implement onSetLevelUser
     throw UnimplementedError();
+  }
+
+  @override
+  Future onReopenStatus(int inspectionId) async {
+    // TODO: implement onReopenStatus
+    final header = await NetworkConfig.getAuthorizationHeader();
+    final responseJson = await http.put(
+        NetworkConfig.SERVER_URL + NetworkConfig.REOPEN_STATUS_INSPECTION_ENDPOINT,
+        body: {"id": "$inspectionId"},
+        headers: header);
+    return;
+  }
+
+  @override
+  Future onCloseStatus(int inspectionId) async {
+    // TODO: implement onCloseStatus
+    final header = await NetworkConfig.getAuthorizationHeader();
+    final responseJson = await http.put(
+        NetworkConfig.SERVER_URL + NetworkConfig.CLOSE_STATUS_INSPECTION_ENDPOINT,
+        body: {"id": "$inspectionId"},
+        headers: header);
+    return;
   }
 }

@@ -1,4 +1,4 @@
-import 'package:electrical/ui/admin/admin_page.dart';
+import 'package:electrical/ui/admin/inspection_page.dart';
 import 'package:electrical/ui/leader/leader_page.dart';
 import 'package:electrical/ui/member/member_page.dart';
 import 'package:flutter/material.dart';
@@ -19,7 +19,7 @@ class _HomePageState extends State<HomePage> {
             children: [
               FlatButton(
                   onPressed: () => Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => AdminPage())),
+                      MaterialPageRoute(builder: (context) => InspectionPage())),
                   child: Text("ADMIN")),
               SizedBox(
                 height: 16,

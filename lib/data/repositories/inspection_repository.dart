@@ -19,4 +19,8 @@ abstract class InspectionRepository {
 
   Future onSetLevelUser(SetLevelRequest request);
 
+  Future onReopenStatus(int inspectionId);
+
+  Future onCloseStatus(int inspectionId);
+
 }

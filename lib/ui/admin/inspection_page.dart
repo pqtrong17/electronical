@@ -3,16 +3,18 @@ import 'package:electrical/ui/admin/add_inspection_page.dart';
 import 'package:electrical/ui/admin/contract/inspection_contract.dart';
 import 'package:electrical/ui/admin/detail_admin_page.dart';
 import 'package:electrical/ui/admin/presenter/inspection_presenter.dart';
+import 'package:electrical/ui/login/login_page.dart';
 import 'package:electrical/ui/utils.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:toast/toast.dart';
 
-class AdminPage extends StatefulWidget {
+class InspectionPage extends StatefulWidget {
   @override
-  _AdminPageState createState() => _AdminPageState();
+  _InspectionPageState createState() => _InspectionPageState();
 }
 
-class _AdminPageState extends State<AdminPage> implements InspectionContract {
+class _InspectionPageState extends State<InspectionPage> implements InspectionContract {
   InspectionPresenter mPresenter;
   List<InspectionResponse> mInspection;
   GlobalKey<ScaffoldState> scaffoldKey;
@@ -31,7 +33,7 @@ class _AdminPageState extends State<AdminPage> implements InspectionContract {
     return Scaffold(
       key: scaffoldKey,
       appBar: AppBar(
-        title: Text("ADMIN PAGE"),
+        title: Text("INSPECTIONS"),
         centerTitle: true,
         actions: [
           IconButton(
@@ -184,8 +186,13 @@ class _AdminPageState extends State<AdminPage> implements InspectionContract {
   }
 
   @override
-  void onGetInspectionError() {
+  Future<void> onGetInspectionError() async {
     // TODO: implement onGetInspectionError
+    // SharedPreferences preferences = await SharedPreferences.getInstance();
+    // preferences.remove("token");
+    // preferences.remove("isLogin");
+    // preferences.remove("level");
+    // Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => LoginPage()), (route) => false);
   }
 
   @override
@@ -232,5 +239,25 @@ class _AdminPageState extends State<AdminPage> implements InspectionContract {
   @override
   void onInsertInspectionSuccess() {
     // TODO: implement onInsertInspectionSuccess
+  }
+
+  @override
+  void onCloseError() {
+    // TODO: implement onCloseError
+  }
+
+  @override
+  void onCloseSuccess() {
+    // TODO: implement onCloseSuccess
+  }
+
+  @override
+  void onReopenError() {
+    // TODO: implement onReopenError
+  }
+
+  @override
+  void onReopenSuccess() {
+    // TODO: implement onReopenSuccess
   }
 }

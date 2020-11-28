@@ -35,4 +35,21 @@ class InspectionPresenter {
     });
   }
 
+  void onUpdateStatus(int statusId, int inspectionId){
+    if(statusId == 2){
+      repository.onReopenStatus(inspectionId).then((value) {
+        return contract.onReopenSuccess();
+      }).catchError((onError){
+        return contract.onReopenError();
+      });
+    }
+    if(statusId == 3){
+      repository.onCloseStatus(inspectionId).then((value) {
+        return contract.onCloseSuccess();
+      }).catchError((onError){
+        return contract.onCloseError();
+      });
+    }
+  }
+
 }

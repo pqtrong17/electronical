@@ -16,4 +16,12 @@ abstract class InspectionContract {
   void onInsertInspectionSuccess();
 
   void onInsertInspectionError();
+
+  void onReopenSuccess();
+
+  void onReopenError();
+
+  void onCloseSuccess();
+
+  void onCloseError();
 }

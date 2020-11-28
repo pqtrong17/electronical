@@ -30,7 +30,6 @@ class _DetailAdminPageState extends State<DetailAdminPage> implements Inspection
   String equipmentEditing;
   UpdateInspectionRequest inspectionRequest;
   InspectionPresenter mPresenter;
-
   @override
   void initState() {
     // TODO: implement initState
@@ -385,6 +384,9 @@ class _DetailAdminPageState extends State<DetailAdminPage> implements Inspection
                   : InkWell(
                       onTap: () {
                         Utils.showLoadingDialog(context);
+                        if(statusEditing != widget.detail.status){
+                          mPresenter.onUpdateStatus(statusEditing, widget.detail.id);
+                        }
                         mPresenter.onUpdateInspection(inspectionRequest);
                       },
                       child: Container(
@@ -581,5 +583,25 @@ class _DetailAdminPageState extends State<DetailAdminPage> implements Inspection
     Navigator.pop(context, true);
     Toast.show("Update success", context);
     Navigator.pop(context, true);
+  }
+
+  @override
+  void onCloseError() {
+    // TODO: implement onCloseError
+  }
+
+  @override
+  void onCloseSuccess() {
+    // TODO: implement onCloseSuccess
+  }
+
+  @override
+  void onReopenError() {
+    // TODO: implement onReopenError
+  }
+
+  @override
+  void onReopenSuccess() {
+    // TODO: implement onReopenSuccess
   }
 }

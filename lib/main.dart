@@ -1,5 +1,5 @@
-import 'package:electrical/home_page.dart';
-import 'package:electrical/ui/admin/admin_page.dart';
+import 'package:electrical/ui/admin/inspection_page.dart';
+import 'package:electrical/ui/admin/home_admin.dart';
 import 'package:electrical/ui/leader/leader_page.dart';
 import 'package:electrical/ui/login/login_page.dart';
 import 'package:electrical/ui/member/member_page.dart';
@@ -17,7 +17,7 @@ Future<void> main() async {
             ? MemberPage()
             : level == 2
                 ? LeaderPage()
-                : AdminPage()
+                : HomeAdmin()
         : LoginPage(),
   ));
 }

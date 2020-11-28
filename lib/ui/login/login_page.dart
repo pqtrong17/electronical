@@ -1,5 +1,6 @@
 import 'package:electrical/data/response/login_response.dart';
-import 'package:electrical/ui/admin/admin_page.dart';
+import 'package:electrical/ui/admin/home_admin.dart';
+import 'package:electrical/ui/admin/inspection_page.dart';
 import 'package:electrical/ui/leader/leader_page.dart';
 import 'package:electrical/ui/login/contract/login_contract.dart';
 import 'package:electrical/ui/login/presenter/login_presetner.dart';
@@ -136,7 +137,7 @@ class _State extends State<LoginPage> implements LoginContract {
           Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => LeaderPage()), (route) => false);
           break;
         case 3:
-          Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => AdminPage()), (route) => false);
+          Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => HomeAdmin()), (route) => false);
           break;
       }
     }
