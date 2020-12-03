@@ -10,16 +10,16 @@ class DetailUserPresenter {
     repository = UserRepositoryImpl();
   }
 
-  void onSetAdmin(int userId) {
-    repository.onSetAdmin(userId).then((value) {
+  void onSetAdmin(int userId, String teamId) {
+    repository.onSetAdmin(userId, teamId).then((value) {
       return contract.onSetAdminSuccess();
     }).catchError((onError) {
       return contract.onSetAdminError();
     });
   }
 
-  void onSetOwner(int userId) {
-    repository.onSetAdmin(userId).then((value) {
+  void onSetOwner(int userId, String teamId) {
+    repository.onSetOwner(userId, teamId).then((value) {
       return contract.onSetOwnerSuccess();
     }).catchError((onError) {
       return contract.onSetOwnerError();
@@ -27,7 +27,7 @@ class DetailUserPresenter {
   }
 
   void onSetMember(int userId) {
-    repository.onSetAdmin(userId).then((value) {
+    repository.onSetMember(userId).then((value) {
       return contract.onSetMemberSuccess();
     }).catchError((onError) {
       return contract.onSetMemberError();

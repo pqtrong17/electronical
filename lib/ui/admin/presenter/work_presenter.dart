@@ -5,15 +5,24 @@ import 'package:electrical/ui/admin/contract/work_contract.dart';
 class WorkPresenter {
   WorkContract contract;
   WorkRepository repository;
-  WorkPresenter(this.contract){
+
+  WorkPresenter(this.contract) {
     repository = WorkRepositoryImpl();
   }
 
   void onGetWork(int inspectionId) {
     repository.onGetWorkById(inspectionId).then((value) {
       return contract.onGetWorkSuccess(value);
-    }).catchError((onError){
+    }).catchError((onError) {
       return contract.onGetWorkError();
+    });
+  }
+
+  void onUpdateProgress(String id, String progress) {
+    repository.onUpdateProgress(id, progress).then((value) {
+      return contract.onUpdateProgressSuccess();
+    }).catchError((onError) {
+      contract.onUpdateProgressError();
     });
   }
 }

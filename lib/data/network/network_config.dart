@@ -30,4 +30,12 @@ class NetworkConfig {
   static const String UPDATE_PROGRESS_ENDPOINT = "/owner/updateprogress";
   static const String EDIT_WORK_DETAIL_ENDPOINT = "/member/editworkdetail";
   static const String GET_ALL_OWNERS = "/noauth/getowners";
+  static const String GET_ALL_TEAMS = "/noauth/getteams";
+  static const String EDIT_USER = "/admin/updateuserprofile";
+  static const String BAN_USER = "/admin/banaccount";
+  static const String GET_WORK_FOR_OWNER = "/owner/getmatchins";
+  static const String GET_TEAM_USER = "/owner/getallteammembers";
+  static const String UPDATE_PROGRESS = "/owner/updateprogress";
+  static const String GET_WORK_DETAIL_MEMBER = "/member/getworkdetails";
+  static const String ADD_WORK_DETAIL_MEMBER = "/member/editworkdetail";
 }

@@ -130,7 +130,7 @@ class _InspectionPageState extends State<InspectionPage> implements InspectionCo
                                         detail: data,
                                         isEditable: true,
                                       )));
-                              if(isUpdated){
+                              if(isUpdated != null && isUpdated){
                                 mPresenter.onGetInspection();
                               }
                             },

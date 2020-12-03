@@ -14,10 +14,20 @@ class WorkRepositoryImpl implements WorkRepository{
         NetworkConfig.SERVER_URL + NetworkConfig.GET_WORK_BY_INSPECTION_ENDPOINT,
         body: {"inspection_id" : inspectionId.toString()},
         headers: header);
-    print(responseJson.body.toString());
     Map<String, dynamic> mapFromJson = json.decode(responseJson.body);
     final response = WorkResponse.fromJson(mapFromJson);
     return response;
+  }
+
+  @override
+  Future onUpdateProgress(String id, String progress) async {
+    // TODO: implement onUpdateProgress
+    final header = await NetworkConfig.getAuthorizationHeader();
+    final body = {"id": id, "progress": progress};
+    final responseJson = await http.put(
+        NetworkConfig.SERVER_URL + NetworkConfig.UPDATE_PROGRESS_ENDPOINT,
+        body: body,
+        headers: header);
   }
 
 }

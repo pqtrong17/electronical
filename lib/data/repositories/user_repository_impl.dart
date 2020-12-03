@@ -16,12 +16,13 @@ class UserRepositoryImpl implements UserRepository {
   }
 
   @override
-  Future onSetAdmin(int userId) async {
+  Future onSetAdmin(int userId, String teamId) async {
     // TODO: implement onSetAdmin
     final header = await NetworkConfig.getAuthorizationHeader();
     final responseJson = await http.put(
         NetworkConfig.SERVER_URL + NetworkConfig.SET_ADMIN_ENDPOINT,
-        body: {"id": "$userId"},
+        body: {"id": "$userId",
+          "team_id": teamId},
         headers: header);
     return;
   }
@@ -38,13 +39,19 @@ class UserRepositoryImpl implements UserRepository {
   }
 
   @override
-  Future onSetOwner(int userId) async {
+  Future onSetOwner(int userId, String teamId) async {
     // TODO: implement onSetOwner
     final header = await NetworkConfig.getAuthorizationHeader();
     final responseJson = await http.put(
         NetworkConfig.SERVER_URL + NetworkConfig.SET_OWNER_ENDPOINT,
-        body: {"id": "$userId"},
+        body: {"id": "$userId",
+        "team_id": teamId},
         headers: header);
+    Map map = json.decode(responseJson.body);
+    if(map['message'] == "this_team_already_have_an_owner"){
+      print(map['message'] + "------------------------------");
+      throw map['message'];
+    }
     return;
   }
 }
