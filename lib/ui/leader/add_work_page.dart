@@ -35,6 +35,7 @@ class _AddWorkPageState extends State<AddWorkPage> implements OwnerContract {
     return Scaffold(
       appBar: AppBar(
         title: Text("Add work"),
+        centerTitle: true,
       ),
       body: mTeamUser != null
           ? Column(
@@ -63,6 +64,7 @@ class _AddWorkPageState extends State<AddWorkPage> implements OwnerContract {
                         onTap: () async {
                           int _mIndex = 0;
                           for(int i = 0; i < mTeamUser.data.length; i++){
+                            print("============= ${teamUser.id} ---------- ${mTeamUser.data[i].id}");
                             if(teamUser.id == mTeamUser.data[i].id){
                               _mIndex = i;
                             }
@@ -149,11 +151,11 @@ class _AddWorkPageState extends State<AddWorkPage> implements OwnerContract {
                                   ),
                                 );
                               });
-                          // if (_data != null) {
-                          //   setState(() {
-                          //     owner = _data;
-                          //   });
-                          // }
+                          if (_data != null) {
+                            setState(() {
+                              teamUser = _data;
+                            });
+                          }
                         },
                         child: Container(
                           margin: EdgeInsets.only(left: 16),
