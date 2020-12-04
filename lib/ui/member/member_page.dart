@@ -166,6 +166,7 @@ class _MemberPageState extends State<MemberPage> implements MemberContract {
   @override
   void onAddSuccess() {
     // TODO: implement onAddSuccess
+    mPresenter.onGetWorks();
     Navigator.pop(context);
     Toast.show("Success", context);
   }
