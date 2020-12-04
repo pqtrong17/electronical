@@ -4,7 +4,7 @@ import 'package:electrical/data/response/team_user_response.dart';
 abstract class OwnerContract {
   void onGetWorkSuccess(List<InspectionResponse> response);
 
-  void onGetWorkError();
+  void onGetWorkError(String error);
 
   void onGetTeamUserSuccess(TeamUserResponse response);
 

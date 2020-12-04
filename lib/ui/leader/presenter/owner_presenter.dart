@@ -15,7 +15,7 @@ class OwnerPresenter {
     repository.onGetWork().then((value) {
       return contract.onGetWorkSuccess(value);
     }).catchError((onError) {
-      return contract.onGetWorkError();
+      return contract.onGetWorkError(onError);
     });
   }
 

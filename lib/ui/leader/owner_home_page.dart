@@ -14,9 +14,11 @@ class OwnerHomePage extends StatefulWidget {
   _OwnerHomePageState createState() => _OwnerHomePageState();
 }
 
-class _OwnerHomePageState extends State<OwnerHomePage> implements OwnerContract {
+class _OwnerHomePageState extends State<OwnerHomePage>
+    implements OwnerContract {
   OwnerPresenter mPresenter;
   List<InspectionResponse> mWorks;
+  bool isNoData = false;
 
   @override
   void initState() {
@@ -64,7 +66,6 @@ class _OwnerHomePageState extends State<OwnerHomePage> implements OwnerContract 
       appBar: AppBar(
         title: Text("OWNER PAGE"),
         centerTitle: true,
-
       ),
       body: SafeArea(
         child: mWorks != null
@@ -72,9 +73,13 @@ class _OwnerHomePageState extends State<OwnerHomePage> implements OwnerContract 
                 itemBuilder: (context, index) => itemWork(mWorks[index]),
                 itemCount: mWorks.length,
               )
-            : Center(
-                child: CircularProgressIndicator(),
-              ),
+            : isNoData
+                ? Center(
+                    child: Text("No work assign for you"),
+                  )
+                : Center(
+                    child: CircularProgressIndicator(),
+                  ),
       ),
     );
   }
@@ -153,8 +158,13 @@ class _OwnerHomePageState extends State<OwnerHomePage> implements OwnerContract 
   }
 
   @override
-  void onGetWorkError() {
+  void onGetWorkError(String error) {
     // TODO: implement onGetWorkError
+    if (error == "no_data") {
+      setState(() {
+        isNoData = true;
+      });
+    }
   }
 
   @override
@@ -185,4 +195,3 @@ class _OwnerHomePageState extends State<OwnerHomePage> implements OwnerContract 
     // TODO: implement onAddSuccess
   }
 }
-

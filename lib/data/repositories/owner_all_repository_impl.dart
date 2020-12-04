@@ -7,7 +7,7 @@ import 'package:electrical/data/response/inspection_response.dart';
 import 'package:electrical/data/response/team_user_response.dart';
 import 'package:http/http.dart' as http;
 
-class OwnerAllRepositoryImpl implements OwnerAllRepository{
+class OwnerAllRepositoryImpl implements OwnerAllRepository {
   @override
   Future<List<InspectionResponse>> onGetWork() async {
     // TODO: implement onGetWork
@@ -16,9 +16,18 @@ class OwnerAllRepositoryImpl implements OwnerAllRepository{
         NetworkConfig.SERVER_URL + NetworkConfig.GET_WORK_FOR_OWNER,
         headers: header);
     Map<String, dynamic> mapFromJson = json.decode(responseJson.body);
-    final response = (mapFromJson['data'] as List)
-        .map((e) => InspectionResponse.fromJson(e))
-        .toList();
+    final response = mapFromJson['message'] != "no_data"
+        ? (mapFromJson['data'] as List)
+            .map((e) => InspectionResponse.fromJson(e))
+            .toList()
+        : mapFromJson['message'];
+    if (mapFromJson['message'] != "no_data") {
+      final response = (mapFromJson['data'] as List)
+          .map((e) => InspectionResponse.fromJson(e))
+          .toList();
+    } else {
+      throw mapFromJson['message'];
+    }
     return response;
   }
 
@@ -56,5 +65,4 @@ class OwnerAllRepositoryImpl implements OwnerAllRepository{
         body: body,
         headers: header);
   }
-
 }

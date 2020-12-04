@@ -239,7 +239,7 @@ class _AddWorkPageState extends State<AddWorkPage> implements OwnerContract {
   }
 
   @override
-  void onGetWorkError() {
+  void onGetWorkError(String error) {
     // TODO: implement onGetWorkError
   }
 
