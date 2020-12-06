@@ -50,7 +50,7 @@ class OwnerAllRepositoryImpl implements OwnerAllRepository {
     final body = request.toJson();
     final responseJson = await http.post(
         NetworkConfig.SERVER_URL + NetworkConfig.ADD_WORK_DETAIL_ENDPOINT,
-        body: body,
+        body: json.encode(body),
         headers: header);
     return;
   }

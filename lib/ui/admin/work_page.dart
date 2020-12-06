@@ -10,8 +10,9 @@ import 'package:seekbar/seekbar.dart';
 import 'package:toast/toast.dart';
 class WorkPage extends StatefulWidget {
   final int inspectionId;
+  final bool isDone;
 
-  WorkPage(this.inspectionId);
+  WorkPage(this.inspectionId, this.isDone);
 
   @override
   _WorkPageState createState() => _WorkPageState();
@@ -41,7 +42,7 @@ class _WorkPageState extends State<WorkPage> implements WorkContract {
           style: TextStyle(fontWeight: FontWeight.bold),
         ),
         actions: [
-          IconButton(
+          !widget.isDone ? IconButton(
             onPressed: () async {
               bool isReload = await Navigator.push(context,
                   MaterialPageRoute(builder: (context) => AddWorkPage(inspectionId: widget.inspectionId)));
@@ -50,7 +51,7 @@ class _WorkPageState extends State<WorkPage> implements WorkContract {
               }
             },
             icon: Icon(Icons.add),
-          )
+          ) : Container()
         ],
       ),
       body: SafeArea(
@@ -111,7 +112,7 @@ class _WorkPageState extends State<WorkPage> implements WorkContract {
                       setState(() {
                         progress = double.parse(value.toStringAsFixed(1));
                       });
-                      Toast.show(progress.toStringAsFixed(1).toString(), context);
+                      Toast.show((progress * 100).toString() + "%", context);
                     },
                   )
                 ),

@@ -12,6 +12,10 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:toast/toast.dart';
 
 class MemberPage extends StatefulWidget {
+  final String name;
+
+  MemberPage(this.name);
+
   @override
   _MemberPageState createState() => _MemberPageState();
 }
@@ -21,6 +25,7 @@ class _MemberPageState extends State<MemberPage> implements MemberContract {
   WorkResponse mWorks;
   AddDescriptionRequest mRequest;
   TextEditingController controller = TextEditingController();
+  bool isNoData = false;
 
   @override
   void initState() {
@@ -28,6 +33,28 @@ class _MemberPageState extends State<MemberPage> implements MemberContract {
     super.initState();
     mPresenter = MemberPresenter(this);
     mPresenter.onGetWorks();
+  }
+
+  Future<Null> _onRefresh() async{
+    mPresenter.onGetWorks();
+    return null;
+  }
+
+  String _getFirstName(String string){
+    // int _pos = 0;
+    // for(int i = string.length; i < string.length; i--){
+    //   if(string[i] == " "){
+    //     _pos = i;
+    //     break;
+    //   }
+    // }
+    // print("SPACING: $_pos");
+    print("SPACING: ${string.lastIndexOf(" ")}");
+    if(string.contains(" ")){
+      return string.substring(string.lastIndexOf(" "), string.length);
+    }else{
+      return string;
+    }
   }
 
   @override
@@ -66,54 +93,65 @@ class _MemberPageState extends State<MemberPage> implements MemberContract {
         child: Icon(Icons.logout),
       ),
       appBar: AppBar(
-        title: Text("MEMBER PAGE"),
+        title: Text("WELCOME " + _getFirstName(widget.name)),
         centerTitle: true,
       ),
       body: SafeArea(
-        child: mWorks != null
-            ? ListView.builder(
-                itemBuilder: (context, index) => itemWork(mWorks.data[index]),
-                itemCount: mWorks.data.length,
-              )
-            : Center(
-                child: CircularProgressIndicator(),
-              ),
+        child: RefreshIndicator(
+          onRefresh: _onRefresh,
+          child: mWorks != null && mWorks.data.length != 0
+              ? ListView.builder(
+                  itemBuilder: (context, index) => itemWork(mWorks.data[index]),
+                  itemCount: mWorks.data.length,
+                )
+              : mWorks != null && mWorks.data.length == 0
+                  ? Center(
+                      child: Text(
+                        "No work assign for you",
+                        style:
+                            TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                      ),
+                    )
+                  : Center(
+                      child: CircularProgressIndicator(),
+                    ),
+        ),
       ),
     );
   }
 
   Widget itemWork(WorkData data) {
     return GestureDetector(
-      onTap: (){
-        showDialog(context: context, builder: (context) => AlertDialog(
-          title: Text("Add description"),
-          content: TextField(
-            controller: controller,
-            decoration: InputDecoration(
-              contentPadding: EdgeInsets.all(0),
-              isDense: true
-            ),
-          ),
-          actions: [
-            FlatButton(
-              onPressed: () {
-                Navigator.pop(context);
-                if (controller.text != "") {
-                  Utils.showLoadingDialog(context);
-                  mRequest = AddDescriptionRequest();
-                  mRequest.id = data.id.toString();
-                  mRequest.description = controller.text;
-                  mPresenter.onAdd(mRequest);
-                }
-              },
-              child: Text("OK"),
-            ),
-            FlatButton(
-              onPressed: () => Navigator.pop(context),
-              child: Text("CANCEL"),
-            )
-          ],
-        ));
+      onTap: () {
+        showDialog(
+            context: context,
+            builder: (context) => AlertDialog(
+                  title: Text("Add description"),
+                  content: TextField(
+                    controller: controller,
+                    decoration: InputDecoration(
+                        contentPadding: EdgeInsets.all(0), isDense: true),
+                  ),
+                  actions: [
+                    FlatButton(
+                      onPressed: () {
+                        Navigator.pop(context);
+                        if (controller.text != "") {
+                          Utils.showLoadingDialog(context);
+                          mRequest = AddDescriptionRequest();
+                          mRequest.id = data.id.toString();
+                          mRequest.description = controller.text;
+                          mPresenter.onAdd(mRequest);
+                        }
+                      },
+                      child: Text("OK"),
+                    ),
+                    FlatButton(
+                      onPressed: () => Navigator.pop(context),
+                      child: Text("CANCEL"),
+                    )
+                  ],
+                ));
       },
       child: Card(
         child: Padding(
@@ -174,6 +212,9 @@ class _MemberPageState extends State<MemberPage> implements MemberContract {
   @override
   void onGetError() {
     // TODO: implement onGetError
+    setState(() {
+      isNoData = true;
+    });
   }
 
   @override

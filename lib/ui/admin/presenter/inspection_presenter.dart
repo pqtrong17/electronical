@@ -1,5 +1,8 @@
 import 'package:electrical/data/repositories/inspection_repository.dart';
 import 'package:electrical/data/repositories/inspection_repository_impl.dart';
+import 'package:electrical/data/repositories/owner_repository.dart';
+import 'package:electrical/data/repositories/user_repository.dart';
+import 'package:electrical/data/repositories/user_repository_impl.dart';
 import 'package:electrical/data/request/update_inspection_request.dart';
 import 'package:electrical/ui/admin/contract/inspection_contract.dart';
 
@@ -52,4 +55,12 @@ class InspectionPresenter {
     }
   }
 
+  void onGetAllOwner(){
+    OwnerRepository repository = OwnerRepository();
+    repository.onGetAllOwner().then((value) {
+      return contract.onGetOwnerSuccess(value);
+    }).catchError((onError){
+      return contract.onGetOwnerError();
+    });
+  }
 }

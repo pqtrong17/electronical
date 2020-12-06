@@ -65,7 +65,7 @@ class _AddUserPageState extends State<AddUserPage> implements AddUserContract {
     return Scaffold(
       resizeToAvoidBottomInset: true,
       appBar: AppBar(
-        title: Text("UPDATE USER"),
+        title: Text(widget.isUpdate != null && widget.isUpdate ? "UPDATE USER" : "ADD USER"),
         centerTitle: true,
       ),
       body: SafeArea(
@@ -564,49 +564,50 @@ class _AddUserPageState extends State<AddUserPage> implements AddUserContract {
                     SizedBox(
                       height: 16,
                     ),
-                    Visibility(
-                      visible: widget.isUpdate != null && widget.isUpdate,
-                      child: GestureDetector(
-                        onTap: () {
-                          showDialog(context: context, builder: (context)=> AlertDialog(
-                            title: Text("Ban user"),
-                            content: Text("Do you really want to ban user?", style: TextStyle(
-                                color: Colors.red
-                            ),),
-                            actions: [
-                              FlatButton(
-                                onPressed: () {
-                                  Navigator.pop(context);
-                                  Utils.showLoadingDialog(context);
+                    widget.isUpdate != null && widget.isUpdate ? GestureDetector(
+                      onTap: () {
+                        showDialog(context: context, builder: (context)=> AlertDialog(
+                          title: Text(widget.user.level == 0 ? "Unban user" :"Ban user"),
+                          content: Text(widget.user.level == 0 ? "Do you really want to unban user?" :"Do you really want to ban user?", style: TextStyle(
+                              color: Colors.red
+                          ),),
+                          actions: [
+                            FlatButton(
+                              onPressed: () {
+                                Navigator.pop(context);
+                                Utils.showLoadingDialog(context);
+                                if (widget.user.level != 0) {
                                   mPresenter.onBanUser(widget.user.id);
-                                },
-                                child: Text("OK"),
-                              ),
-                              FlatButton(
-                                onPressed: () => Navigator.pop(context),
-                                child: Text("CANCEL"),
-                              ),
-                            ],
-                          ));
-                        },
-                        child: Container(
-                          padding: EdgeInsets.all(16),
-                          width: double.infinity,
-                          margin: EdgeInsets.symmetric(horizontal: 16),
-                          alignment: Alignment.center,
-                          decoration: BoxDecoration(
-                              color: Colors.red,
-                              borderRadius: BorderRadius.circular(12)),
-                          child: Text(
-                            "BAN USER",
-                            style: TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.white),
-                          ),
+                                }else{
+                                  mPresenter.onUnBanUser(widget.user.id);
+                                }
+                              },
+                              child: Text("OK"),
+                            ),
+                            FlatButton(
+                              onPressed: () => Navigator.pop(context),
+                              child: Text("CANCEL"),
+                            ),
+                          ],
+                        ));
+                      },
+                      child: Container(
+                        padding: EdgeInsets.all(16),
+                        width: double.infinity,
+                        margin: EdgeInsets.symmetric(horizontal: 16),
+                        alignment: Alignment.center,
+                        decoration: BoxDecoration(
+                            color: widget.user.level == 0 ? Colors.amber :Colors.red,
+                            borderRadius: BorderRadius.circular(12)),
+                        child: Text(
+                          widget.user.level == 0 ? "UNBAN USER" :"BAN USER",
+                          style: TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white),
                         ),
                       ),
-                    )
+                    ) : Container()
                   ],
                 ),
               )
@@ -864,6 +865,19 @@ class _AddUserPageState extends State<AddUserPage> implements AddUserContract {
   @override
   void onSetOwnerSuccess() {
     // TODO: implement onSetOwnerSuccess
+    Navigator.pop(context);
+    Navigator.pop(context, true);
+  }
+
+  @override
+  void onUnBanError() {
+    // TODO: implement onUnBanError
+  }
+
+  @override
+  void onUnBanSuccess() {
+    // TODO: implement onUnBanSuccess
+    Toast.show("Unban user success", context);
     Navigator.pop(context);
     Navigator.pop(context, true);
   }

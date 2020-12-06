@@ -6,8 +6,12 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class HomeAdmin extends StatefulWidget {
+  final String name;
+
   @override
   _HomeAdminState createState() => _HomeAdminState();
+
+  HomeAdmin(this.name);
 }
 
 class _HomeAdminState extends State<HomeAdmin> {
@@ -61,7 +65,7 @@ class _HomeAdminState extends State<HomeAdmin> {
         currentIndex: currentIndex,
       ),
       body: SafeArea(
-        child: currentIndex == 0 ? InspectionPage() : UsersPage(),
+        child: currentIndex == 0 ? InspectionPage(widget.name) : UsersPage(),
       ),
     );
   }

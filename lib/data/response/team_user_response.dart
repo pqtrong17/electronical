@@ -33,7 +33,7 @@ class TeamUser {
   String phoneNumber;
   String gender;
   String mail;
-  Null socketId;
+  String socketId;
   int level;
   String createdAt;
   String updatedAt;

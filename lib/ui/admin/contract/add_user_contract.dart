@@ -17,6 +17,10 @@ abstract class AddUserContract {
 
   void onBanError();
 
+  void onUnBanSuccess();
+
+  void onUnBanError();
+
   void onSetAdminSuccess();
 
   void onSetAdminError();

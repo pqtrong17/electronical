@@ -41,9 +41,8 @@ class InspectionRepositoryImpl implements InspectionRepository {
     final body = request.toJson();
     final responseJson = await http.put(
         NetworkConfig.SERVER_URL + NetworkConfig.UPDATE_INSPECTION_ENDPOINT,
-        body: body,
+        body: json.encode(body),
         headers: header);
-    print(responseJson.statusCode.toString());
     return;
   }
 
@@ -54,9 +53,8 @@ class InspectionRepositoryImpl implements InspectionRepository {
     final body = request.toJson();
     final responseJson = await http.post(
         NetworkConfig.SERVER_URL + NetworkConfig.INSERT_INSPECTION_ENDPOINT,
-        body: body,
+        body: json.encode(body),
         headers: header);
-    print(responseJson.body.toString());
     return;
   }
 

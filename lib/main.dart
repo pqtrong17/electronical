@@ -11,14 +11,15 @@ Future<void> main() async {
   SharedPreferences pref = await SharedPreferences.getInstance();
   bool isLogin = pref.getBool("isLogin");
   int level = pref.getInt("level");
+  String name = pref.getString("name");
   print(pref.getString("token"));
   runApp(MaterialApp(
     home: isLogin != null && isLogin
         ? level == 1
-            ? MemberPage()
+            ? MemberPage(name)
             : level == 2
-                ? OwnerHomePage()
-                : HomeAdmin()
+                ? OwnerHomePage(name)
+                : HomeAdmin(name)
         : LoginPage(),
   ));
 }

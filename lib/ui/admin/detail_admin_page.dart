@@ -1,4 +1,7 @@
 import 'package:electrical/data/request/update_inspection_request.dart';
+import 'package:electrical/data/response/owner_response.dart';
+import 'package:electrical/data/response/team_user_response.dart';
+import 'package:electrical/data/response/user_response.dart';
 import 'package:electrical/ui/admin/contract/inspection_contract.dart';
 import 'package:electrical/ui/admin/presenter/inspection_presenter.dart';
 import 'package:electrical/ui/admin/work_page.dart';
@@ -30,23 +33,27 @@ class _DetailAdminPageState extends State<DetailAdminPage> implements Inspection
   String equipmentEditing;
   UpdateInspectionRequest inspectionRequest;
   InspectionPresenter mPresenter;
+  List<Owner> mOwner;
+  Owner owner;
+  User user;
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     inspectionRequest = UpdateInspectionRequest(
-      id: widget.detail.id.toString(),
+      id: widget.detail.id,
       description: widget.detail.description,
       title: widget.detail.title,
       endDate: widget.detail.endDate,
       equipmentRequire: widget.detail.equipmentRequire,
       lineCondition: widget.detail.lineCondition,
       lineLocation: widget.detail.lineLocation,
-      ownerId: widget.detail.ownerId.toString(),
+      ownerId: widget.detail.ownerId,
       startDate: widget.detail.startDate,
       teamId: widget.detail.teamId.toString()
     );
     mPresenter = InspectionPresenter(this);
+    mPresenter.onGetAllOwner();
   }
 
   @override
@@ -56,11 +63,11 @@ class _DetailAdminPageState extends State<DetailAdminPage> implements Inspection
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
         title:
-            Text(widget.isEditable ? "EDIT INSPECTION" : "DETAIL INSPECTION"),
+            Text(widget.isEditable ? "UPDATE INSPECTION" : "DETAIL INSPECTION"),
         centerTitle: true,
       ),
       body: SafeArea(
-        child: Padding(
+        child: mOwner != null ? Padding(
           padding: const EdgeInsets.all(16.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -343,13 +350,147 @@ class _DetailAdminPageState extends State<DetailAdminPage> implements Inspection
                   inspectionRequest.equipmentRequire = _data;
                 }
               }),
+              Text("Owner", style: TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 16
+              ),),
+              SizedBox(
+                height: 8,
+              ),
+              InkWell(
+                onTap: () async {
+                  int _mIndex = 0;
+                  for(int i = 0; i < mOwner.length; i++){
+                    if(owner.id == mOwner[i].id){
+                      _mIndex = i;
+                    }
+                  }
+                  Owner _data = await showDialog(
+                      context: context,
+                      builder: (context) {
+                        return StatefulBuilder(
+                          builder: (context, _setState) => Dialog(
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  vertical: 12),
+                              child: Column(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  Text(
+                                    "Owners",
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 16),
+                                  ),
+                                  ListView.builder(
+                                    shrinkWrap: true,
+                                    itemBuilder: (context, index) =>
+                                        Column(
+                                          children: [
+                                            InkWell(
+                                              onTap: () {
+                                                _setState(() {
+                                                  _mIndex = index;
+                                                });
+                                              },
+                                              child: Padding(
+                                                padding:
+                                                const EdgeInsets
+                                                    .symmetric(
+                                                    vertical: 8,
+                                                    horizontal: 12),
+                                                child: Row(
+                                                  children: [
+                                                    Icon(_mIndex ==
+                                                        index
+                                                        ? Icons
+                                                        .radio_button_checked
+                                                        : Icons
+                                                        .radio_button_off),
+                                                    SizedBox(
+                                                      width: 12,
+                                                    ),
+                                                    Text(mOwner[index].owner.name)
+                                                  ],
+                                                ),
+                                              ),
+                                            ),
+                                            SizedBox(
+                                              height: 12,
+                                            )
+                                          ],
+                                        ),
+                                    itemCount: mOwner.length,
+                                  ),
+                                  Row(
+                                    mainAxisAlignment:
+                                    MainAxisAlignment.end,
+                                    children: [
+                                      FlatButton(
+                                        onPressed: () {
+                                          Navigator.pop(
+                                              context,
+                                              mOwner[_mIndex]);
+                                        },
+                                        child: Text("OK"),
+                                      ),
+                                      FlatButton(
+                                        onPressed: () =>
+                                            Navigator.pop(context),
+                                        child: Text("CANCEL"),
+                                      )
+                                    ],
+                                  )
+                                ],
+                              ),
+                            ),
+                          ),
+                        );
+                      });
+                  if (_data != null) {
+                    setState(() {
+                      owner = _data;
+                    });
+                    inspectionRequest.ownerId = owner.id;
+                  }
+                },
+                child: Container(
+                  decoration: BoxDecoration(
+                      border: Border.all(
+                          color: Colors.black38, width: 1),
+                      borderRadius: BorderRadius.circular(4)),
+                  padding: EdgeInsets.symmetric(
+                      vertical: 12, horizontal: 8),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Container(
+                        child: Row(
+                          children: [
+                            Text(owner != null
+                                ? owner.owner.name
+                                : "Click to choose Owner"),
+                            SizedBox(
+                              width: 8,
+                            ),
+                            Icon(Icons.arrow_drop_down)
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              SizedBox(
+                height: 8,
+              ),
               !widget.isEditable
                   ? InkWell(
                       onTap: () => Navigator.push(
                           context,
                           MaterialPageRoute(
                               builder: (context) =>
-                                  WorkPage(widget.detail.id))),
+                                  WorkPage(widget.detail.id, widget.detail.status == 3))),
                       child: Container(
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -409,6 +550,7 @@ class _DetailAdminPageState extends State<DetailAdminPage> implements Inspection
               SizedBox(
                 height: 16,
               ),
+
               Visibility(
                 visible: widget.isEditable != null && widget.isEditable,
                 child: InkWell(
@@ -454,6 +596,8 @@ class _DetailAdminPageState extends State<DetailAdminPage> implements Inspection
               )
             ],
           ),
+        ) : Center(
+          child: CircularProgressIndicator(),
         ),
       ),
     );
@@ -603,5 +747,25 @@ class _DetailAdminPageState extends State<DetailAdminPage> implements Inspection
   @override
   void onReopenSuccess() {
     // TODO: implement onReopenSuccess
+  }
+
+  @override
+  void onGetOwnerError() {
+    // TODO: implement onGetOwnerError
+  }
+
+  @override
+  void onGetOwnerSuccess(OwnerResponse response) {
+    // TODO: implement onGetOwnerSuccess
+    List<Owner> _list = List();
+    for(int i = 0; i < response.data.length; i++){
+      if(response.data[i].owner.level == 2){
+        _list.add(response.data[i]);
+      }
+    }
+    setState(() {
+      mOwner = _list;
+      owner = _list[0];
+    });
   }
 }

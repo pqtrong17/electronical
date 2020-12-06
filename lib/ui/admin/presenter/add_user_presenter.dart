@@ -48,6 +48,15 @@ class AddUserPresenter {
     });
   }
 
+  void onUnBanUser(int userId) {
+    EditUserRepository repository = EditUserRepository();
+    repository.onUnBanUser(userId).then((value) {
+      return contract.onUnBanSuccess();
+    }).catchError((onError) {
+      return contract.onUnBanError();
+    });
+  }
+
   void onSetAdmin(int userId, String teamId) {
     UserRepository repository = UserRepositoryImpl();
     repository.onSetAdmin(userId, teamId).then((value) {

@@ -22,9 +22,9 @@ class _AddInspectionPageState extends State<AddInspectionPage>
   DateTime startDate;
   DateTime endDate;
   InsertInspectionPresenter mPresenter;
-  OwnerResponse mOwner;
   Owner owner;
   InsertInspectionRequest mRequest;
+  List<Owner> mOwners;
 
   @override
   void initState() {
@@ -51,7 +51,7 @@ class _AddInspectionPageState extends State<AddInspectionPage>
         centerTitle: true,
       ),
       body: SafeArea(
-        child: mOwner != null
+        child: mOwners != null && owner != null
             ? SingleChildScrollView(
                 child: Column(
                   children: [
@@ -118,11 +118,11 @@ class _AddInspectionPageState extends State<AddInspectionPage>
                           InkWell(
                             onTap: () async {
                               int _mIndex = 0;
-                              for(int i = 0; i < mOwner.data.length; i++){
-                                if(owner.id == mOwner.data[i].owner.id){
-                                  _mIndex = i;
-                                }
-                              }
+                              // for(int i = 0; i < mOwner.data.length; i++){
+                              //   if(owner.id == mOwner.data[i].owner.id){
+                              //     _mIndex = i;
+                              //   }
+                              // }
                               Owner _data = await showDialog(
                                   context: context,
                                   builder: (context) {
@@ -168,10 +168,7 @@ class _AddInspectionPageState extends State<AddInspectionPage>
                                                             SizedBox(
                                                               width: 12,
                                                             ),
-                                                            Text(mOwner
-                                                                .data[index]
-                                                                .owner
-                                                                .name)
+                                                            Text(mOwners[index].owner.name)
                                                           ],
                                                         ),
                                                       ),
@@ -181,7 +178,7 @@ class _AddInspectionPageState extends State<AddInspectionPage>
                                                     )
                                                   ],
                                                 ),
-                                                itemCount: mOwner.data.length,
+                                                itemCount: mOwners.length,
                                               ),
                                               Row(
                                                 mainAxisAlignment:
@@ -191,8 +188,7 @@ class _AddInspectionPageState extends State<AddInspectionPage>
                                                     onPressed: () {
                                                       Navigator.pop(
                                                           context,
-                                                          mOwner.data[_mIndex]
-                                                              .owner);
+                                                          mOwners[_mIndex]);
                                                     },
                                                     child: Text("OK"),
                                                   ),
@@ -229,7 +225,7 @@ class _AddInspectionPageState extends State<AddInspectionPage>
                                     child: Row(
                                       children: [
                                         Text(owner != null
-                                            ? owner.name
+                                            ? owner.owner.name
                                             : "Click to choose Owner"),
                                         SizedBox(
                                           width: 8,
@@ -258,8 +254,9 @@ class _AddInspectionPageState extends State<AddInspectionPage>
                           mRequest.lineCondition = conditionController.text;
                           mRequest.lineLocation = locationController.text;
                           mRequest.equipmentRequire = equipmentController.text;
-                          mRequest.status = 1.toString();
-                          mRequest.ownerId = owner.id.toString();
+                          mRequest.status = 1;
+                          mRequest.teamId = owner.owner.teamId;
+                          mRequest.ownerId = owner.id;
                           mRequest.startDate = ServiceUtils.formatDateYMD(
                               startDate.toIso8601String());
                           mRequest.endDate = ServiceUtils.formatDateYMD(
@@ -458,9 +455,15 @@ class _AddInspectionPageState extends State<AddInspectionPage>
   @override
   void onGetOwnerSuccess(OwnerResponse response) {
     // TODO: implement onGetOwnerSuccess
+    List<Owner> _list = List();
+    for(int i = 0; i < response.data.length; i++){
+      if(response.data[i].owner.level == 2){
+        _list.add(response.data[i]);
+      }
+    }
     setState(() {
-      mOwner = response;
-      owner = mOwner.data[0].owner;
+      mOwners = _list;
+      owner = _list[0];
     });
   }
 

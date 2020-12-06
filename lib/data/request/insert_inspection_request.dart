@@ -4,9 +4,10 @@ class InsertInspectionRequest {
   String equipmentRequire;
   String lineCondition;
   String lineLocation;
-  String ownerId;
+  int ownerId;
   String startDate;
-  String status;
+  int status;
+  int teamId;
   String title;
 
   InsertInspectionRequest(
@@ -18,6 +19,7 @@ class InsertInspectionRequest {
         this.ownerId,
         this.startDate,
         this.status,
+        this.teamId,
         this.title});
 
   InsertInspectionRequest.fromJson(Map<String, dynamic> json) {
@@ -30,6 +32,7 @@ class InsertInspectionRequest {
     startDate = json['start_date'];
     status = json['status'];
     title = json['title'];
+    teamId = json['team_id'];
   }
 
   Map<String, dynamic> toJson() {
@@ -43,6 +46,7 @@ class InsertInspectionRequest {
     data['start_date'] = this.startDate;
     data['status'] = this.status;
     data['title'] = this.title;
+    data['team_id'] = this.teamId;
     return data;
   }
 }

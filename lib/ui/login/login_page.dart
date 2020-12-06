@@ -128,16 +128,17 @@ class _State extends State<LoginPage> implements LoginContract {
       pref.setBool("isLogin", true);
       pref.setString("token", response.token);
       pref.setInt("level", response.data.level);
+      pref.setString("name", response.data.name);
       Navigator.pop(context);
       switch (response.data.level) {
         case 1:
-          Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => MemberPage()), (route) => false);
+          Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => MemberPage(response.data.name)), (route) => false);
           break;
         case 2:
-          Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => OwnerHomePage()), (route) => false);
+          Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => OwnerHomePage(response.data.name)), (route) => false);
           break;
         case 3:
-          Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => HomeAdmin()), (route) => false);
+          Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => HomeAdmin(response.data.name)), (route) => false);
           break;
         default: 
           Utils.showAlertDialog(context, title: "Error", content: "This account has been banned! Can't login!");

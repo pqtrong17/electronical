@@ -34,7 +34,7 @@ class _AddWorkPageState extends State<AddWorkPage> implements OwnerContract {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Add work"),
+        title: Text("ADD WORK"),
         centerTitle: true,
       ),
       body: mTeamUser != null

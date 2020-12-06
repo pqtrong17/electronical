@@ -1,4 +1,6 @@
 import 'package:electrical/data/response/inspection_response.dart';
+import 'package:electrical/data/response/owner_response.dart';
+import 'package:electrical/data/response/user_response.dart';
 import 'package:electrical/ui/admin/add_inspection_page.dart';
 import 'package:electrical/ui/admin/contract/inspection_contract.dart';
 import 'package:electrical/ui/admin/detail_admin_page.dart';
@@ -10,6 +12,10 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:toast/toast.dart';
 
 class InspectionPage extends StatefulWidget {
+  final String name;
+
+  InspectionPage(this.name);
+
   @override
   _InspectionPageState createState() => _InspectionPageState();
 }
@@ -27,13 +33,34 @@ class _InspectionPageState extends State<InspectionPage> implements InspectionCo
     mPresenter.onGetInspection();
     scaffoldKey = GlobalKey();
   }
+  Future<Null> _onRefresh() async{
+    mPresenter.onGetInspection();
+    return null;
+  }
+
+  String _getFirstName(String string){
+    // int _pos = 0;
+    // for(int i = string.length; i < string.length; i--){
+    //   if(string[i] == " "){
+    //     _pos = i;
+    //     break;
+    //   }
+    // }
+    // print("SPACING: $_pos");
+    print("SPACING: ${string.lastIndexOf(" ")}");
+    if(string.contains(" ")){
+      return string.substring(string.lastIndexOf(" "), string.length);
+    }else{
+      return string;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       key: scaffoldKey,
       appBar: AppBar(
-        title: Text("INSPECTIONS"),
+        title: Text("WELCOME " + _getFirstName(widget.name)),
         centerTitle: true,
         actions: [
           IconButton(
@@ -49,24 +76,29 @@ class _InspectionPageState extends State<InspectionPage> implements InspectionCo
         ],
       ),
       body: SafeArea(
-        child: Column(
-          children: [
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Text("List of work will be displaying here"),
-            ),
-            mInspection != null
-                ? Expanded(
-                    child: ListView.builder(
-                      itemBuilder: (context, index) =>
-                          itemWork(mInspection[index]),
-                      itemCount: mInspection.length,
-                    ),
-                  )
-                : Center(
-                    child: CircularProgressIndicator(),
-                  )
-          ],
+        child: RefreshIndicator(
+          onRefresh: () {
+            return _onRefresh();
+          },
+          child: Column(
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Text("List of work will be displaying here"),
+              ),
+              mInspection != null
+                  ? Expanded(
+                      child: ListView.builder(
+                        itemBuilder: (context, index) =>
+                            itemWork(mInspection[index]),
+                        itemCount: mInspection.length,
+                      ),
+                    )
+                  : Center(
+                      child: CircularProgressIndicator(),
+                    )
+            ],
+          ),
         ),
       ),
     );
@@ -259,5 +291,15 @@ class _InspectionPageState extends State<InspectionPage> implements InspectionCo
   @override
   void onReopenSuccess() {
     // TODO: implement onReopenSuccess
+  }
+
+  @override
+  void onGetOwnerError() {
+    // TODO: implement onGetOwnerError
+  }
+
+  @override
+  void onGetOwnerSuccess(OwnerResponse response) {
+    // TODO: implement onGetOwnerSuccess
   }
 }

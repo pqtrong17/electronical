@@ -21,7 +21,7 @@ class TeamRepository {
     final body = request.toJson();
     final responseJson = await http.post(
         NetworkConfig.SERVER_URL + NetworkConfig.ADD_USER_ENDPOINT,
-        body: body,
+        body: json.encode(body),
         headers: header);
     return;
   }

@@ -1,15 +1,15 @@
 class OwnerResponse {
   String message;
-  List<Data> data;
+  List<Owner> data;
 
   OwnerResponse({this.message, this.data});
 
   OwnerResponse.fromJson(Map<String, dynamic> json) {
     message = json['message'];
     if (json['data'] != null) {
-      data = new List<Data>();
+      data = new List<Owner>();
       json['data'].forEach((v) {
-        data.add(new Data.fromJson(v));
+        data.add(new Owner.fromJson(v));
       });
     }
   }
@@ -24,17 +24,17 @@ class OwnerResponse {
   }
 }
 
-class Data {
+class Owner {
   int id;
   int userId;
-  Owner owner;
+  UserOwner owner;
 
-  Data({this.id, this.userId, this.owner});
+  Owner({this.id, this.userId, this.owner});
 
-  Data.fromJson(Map<String, dynamic> json) {
+  Owner.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     userId = json['user_id'];
-    owner = json['owner'] != null ? new Owner.fromJson(json['owner']) : null;
+    owner = json['owner'] != null ? new UserOwner.fromJson(json['owner']) : null;
   }
 
   Map<String, dynamic> toJson() {
@@ -48,7 +48,7 @@ class Data {
   }
 }
 
-class Owner {
+class UserOwner {
   int id;
   String name;
   String username;
@@ -64,7 +64,7 @@ class Owner {
   int teamId;
   String permission;
 
-  Owner(
+  UserOwner(
       {this.id,
         this.name,
         this.username,
@@ -80,7 +80,7 @@ class Owner {
         this.teamId,
         this.permission});
 
-  Owner.fromJson(Map<String, dynamic> json) {
+  UserOwner.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     name = json['name'];
     username = json['username'];

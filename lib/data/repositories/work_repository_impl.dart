@@ -12,7 +12,7 @@ class WorkRepositoryImpl implements WorkRepository{
     final header = await NetworkConfig.getAuthorizationHeader();
     final responseJson = await http.post(
         NetworkConfig.SERVER_URL + NetworkConfig.GET_WORK_BY_INSPECTION_ENDPOINT,
-        body: {"inspection_id" : inspectionId.toString()},
+        body: json.encode({"inspection_id" : inspectionId}),
         headers: header);
     Map<String, dynamic> mapFromJson = json.decode(responseJson.body);
     final response = WorkResponse.fromJson(mapFromJson);
@@ -26,7 +26,7 @@ class WorkRepositoryImpl implements WorkRepository{
     final body = {"id": id, "progress": progress};
     final responseJson = await http.put(
         NetworkConfig.SERVER_URL + NetworkConfig.UPDATE_PROGRESS_ENDPOINT,
-        body: body,
+        body: json.encode(body),
         headers: header);
   }
 

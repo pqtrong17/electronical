@@ -27,6 +27,11 @@ class _UsersPageState extends State<UsersPage> implements UserContract {
     mPresenter.onGetUsers();
   }
 
+  Future<Null> _onRefresh() async{
+    mPresenter.onGetUsers();
+    return null;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -51,14 +56,17 @@ class _UsersPageState extends State<UsersPage> implements UserContract {
         ],
       ),
       body: SafeArea(
-        child: mUsers != null
-            ? ListView.builder(
-                itemBuilder: (context, index) => itemUser(mUsers.data[index]),
-                itemCount: mUsers.data.length,
-              )
-            : Center(
-                child: CircularProgressIndicator(),
-              ),
+        child: RefreshIndicator(
+          onRefresh: _onRefresh,
+          child: mUsers != null
+              ? ListView.builder(
+                  itemBuilder: (context, index) => itemUser(mUsers.data[index]),
+                  itemCount: mUsers.data.length,
+                )
+              : Center(
+                  child: CircularProgressIndicator(),
+                ),
+        ),
       ),
     );
   }

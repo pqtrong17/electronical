@@ -10,6 +10,10 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class OwnerHomePage extends StatefulWidget {
+  final String name;
+
+  OwnerHomePage(this.name);
+
   @override
   _OwnerHomePageState createState() => _OwnerHomePageState();
 }
@@ -26,6 +30,23 @@ class _OwnerHomePageState extends State<OwnerHomePage>
     super.initState();
     mPresenter = OwnerPresenter(this);
     mPresenter.onGetWork();
+  }
+
+  Future<Null> _onRefresh() async{
+    mPresenter.onGetWork();
+    return null;
+  }
+  
+  String _getFirstName(String string){
+    print("-----------------------");
+    int _pos = 0;
+    for(int i = 0; i < string.length; i++){
+      if(string[i] == " "){
+        _pos = i;
+      }
+    }
+    print("SPACING: $_pos");
+    return string.substring(_pos, string.length - 1);
   }
 
   @override
@@ -64,22 +85,28 @@ class _OwnerHomePageState extends State<OwnerHomePage>
         child: Icon(Icons.logout),
       ),
       appBar: AppBar(
-        title: Text("OWNER PAGE"),
+        title: Text("WELCOME " + _getFirstName(widget.name)),
         centerTitle: true,
       ),
       body: SafeArea(
-        child: mWorks != null
-            ? ListView.builder(
-                itemBuilder: (context, index) => itemWork(mWorks[index]),
-                itemCount: mWorks.length,
-              )
-            : isNoData
-                ? Center(
-                    child: Text("No work assign for you"),
-                  )
-                : Center(
-                    child: CircularProgressIndicator(),
-                  ),
+        child: RefreshIndicator(
+          onRefresh: _onRefresh,
+          child: mWorks != null
+              ? ListView.builder(
+                  itemBuilder: (context, index) => itemWork(mWorks[index]),
+                  itemCount: mWorks.length,
+                )
+              : isNoData
+                  ? Center(
+                      child: Text("No work assign for you", style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 20
+                      ),),
+                    )
+                  : Center(
+                      child: CircularProgressIndicator(),
+                    ),
+        ),
       ),
     );
   }
