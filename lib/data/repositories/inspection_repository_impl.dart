@@ -88,7 +88,7 @@ class InspectionRepositoryImpl implements InspectionRepository {
     final header = await NetworkConfig.getAuthorizationHeader();
     final responseJson = await http.put(
         NetworkConfig.SERVER_URL + NetworkConfig.REOPEN_STATUS_INSPECTION_ENDPOINT,
-        body: {"id": "$inspectionId"},
+        body: json.encode({"id": "$inspectionId"}),
         headers: header);
     return;
   }
@@ -99,7 +99,7 @@ class InspectionRepositoryImpl implements InspectionRepository {
     final header = await NetworkConfig.getAuthorizationHeader();
     final responseJson = await http.put(
         NetworkConfig.SERVER_URL + NetworkConfig.CLOSE_STATUS_INSPECTION_ENDPOINT,
-        body: {"id": "$inspectionId"},
+        body: json.encode({"id": "$inspectionId"}),
         headers: header);
     return;
   }
