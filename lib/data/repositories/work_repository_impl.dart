@@ -20,7 +20,7 @@ class WorkRepositoryImpl implements WorkRepository{
   }
 
   @override
-  Future onUpdateProgress(String id, String progress) async {
+  Future onUpdateProgress(int id, String progress) async {
     // TODO: implement onUpdateProgress
     final header = await NetworkConfig.getAuthorizationHeader();
     final body = {"id": id, "progress": progress};

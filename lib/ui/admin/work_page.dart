@@ -123,7 +123,8 @@ class _WorkPageState extends State<WorkPage> implements WorkContract {
                       onPressed: () {
                         Navigator.pop(context);
                         Utils.showLoadingDialog(context);
-                        mPresenter.onUpdateProgress(data.id.toString(), (progress*100).toString());
+                        print("------------------ ${progress * 100} --- $progress");
+                        mPresenter.onUpdateProgress(data.id, (progress*100).toString());
                       },
                       child: Text("OK"),
                     ),

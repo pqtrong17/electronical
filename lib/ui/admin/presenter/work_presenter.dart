@@ -18,11 +18,11 @@ class WorkPresenter {
     });
   }
 
-  void onUpdateProgress(String id, String progress) {
+  void onUpdateProgress(int id, String progress) {
     repository.onUpdateProgress(id, progress).then((value) {
       return contract.onUpdateProgressSuccess();
     }).catchError((onError) {
-      contract.onUpdateProgressError();
+      return contract.onUpdateProgressError();
     });
   }
 }
