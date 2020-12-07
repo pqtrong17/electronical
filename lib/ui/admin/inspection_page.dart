@@ -39,20 +39,13 @@ class _InspectionPageState extends State<InspectionPage> implements InspectionCo
   }
 
   String _getFirstName(String string){
-    // int _pos = 0;
-    // for(int i = string.length; i < string.length; i--){
-    //   if(string[i] == " "){
-    //     _pos = i;
-    //     break;
-    //   }
-    // }
-    // print("SPACING: $_pos");
-    print("SPACING: ${string.lastIndexOf(" ")}");
-    if(string.contains(" ")){
+    if(string != null && string.contains(" ")){
       return string.substring(string.lastIndexOf(" "), string.length);
-    }else{
-      return string;
     }
+    if(string == null){
+      return "";
+    }
+    return string;
   }
 
   @override
@@ -67,7 +60,7 @@ class _InspectionPageState extends State<InspectionPage> implements InspectionCo
             onPressed: () async {
               bool isReload = await Navigator.push(context,
                   MaterialPageRoute(builder: (context) => AddInspectionPage()));
-              if(isReload){
+              if(isReload != null && isReload){
                 mPresenter.onGetInspection();
               }
             },

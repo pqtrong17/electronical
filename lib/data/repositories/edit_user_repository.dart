@@ -32,7 +32,7 @@ class EditUserRepository {
     final header = await NetworkConfig.getAuthorizationHeader();
 
     final body = {
-      "id": 34,
+      "id": userId,
       "level": 0
     };
     final responseJson = await http.put(
