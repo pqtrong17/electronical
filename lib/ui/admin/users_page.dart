@@ -43,7 +43,7 @@ class _UsersPageState extends State<UsersPage> implements UserContract {
             onPressed: () async {
               bool _isUpdate = await Navigator.push(context,
                   MaterialPageRoute(builder: (context) => AddUserPage()));
-              if(_isUpdate){
+              if(_isUpdate != null && _isUpdate){
                 setState(() {
                   isOpenDialog = true;
                 });

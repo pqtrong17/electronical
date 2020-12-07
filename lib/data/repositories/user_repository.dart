@@ -5,7 +5,7 @@ abstract class UserRepository {
 
   Future onSetAdmin(int userId, String teamId);
 
-  Future onSetOwner(int userId, String teamId);
+  Future onSetOwner(int userId, int teamId);
 
   Future onSetMember(int userId);
 }

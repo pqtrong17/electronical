@@ -18,7 +18,7 @@ class DetailUserPresenter {
     });
   }
 
-  void onSetOwner(int userId, String teamId) {
+  void onSetOwner(int userId, int teamId) {
     repository.onSetOwner(userId, teamId).then((value) {
       return contract.onSetOwnerSuccess();
     }).catchError((onError) {

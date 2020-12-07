@@ -66,7 +66,7 @@ class AddUserPresenter {
     });
   }
 
-  void onSetOwner(int userId, String teamId) {
+  void onSetOwner(int userId, int teamId) {
     UserRepository repository = UserRepositoryImpl();
     repository.onSetOwner(userId, teamId).then((value) {
       return contract.onSetOwnerSuccess();

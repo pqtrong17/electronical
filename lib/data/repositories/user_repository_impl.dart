@@ -33,19 +33,19 @@ class UserRepositoryImpl implements UserRepository {
     final header = await NetworkConfig.getAuthorizationHeader();
     final responseJson = await http.put(
         NetworkConfig.SERVER_URL + NetworkConfig.SET_MEMBER_ENDPOINT,
-        body: {"id": "$userId"},
+        body: json.encode({"id": "$userId"}),
         headers: header);
     return;
   }
 
   @override
-  Future onSetOwner(int userId, String teamId) async {
+  Future onSetOwner(int userId, int teamId) async {
     // TODO: implement onSetOwner
     final header = await NetworkConfig.getAuthorizationHeader();
     final responseJson = await http.put(
         NetworkConfig.SERVER_URL + NetworkConfig.SET_OWNER_ENDPOINT,
-        body: {"id": "$userId",
-        "team_id": teamId},
+        body: json.encode({"id": "$userId",
+          "team_id": teamId}),
         headers: header);
     Map map = json.decode(responseJson.body);
     if(map['message'] == "this_team_already_have_an_owner"){

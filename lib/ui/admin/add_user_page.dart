@@ -520,7 +520,7 @@ class _AddUserPageState extends State<AddUserPage> implements AddUserContract {
                                                     }
                                                     if (_mIndex == 1) {
                                                       mPresenter
-                                                          .onSetOwner(widget.user.id, widget.user.teamId.toString());
+                                                          .onSetOwner(widget.user.id, widget.user.teamId);
                                                     }
                                                     if (_mIndex == 2) {
                                                       mPresenter
