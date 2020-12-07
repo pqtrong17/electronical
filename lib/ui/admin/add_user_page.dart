@@ -462,7 +462,7 @@ class _AddUserPageState extends State<AddUserPage> implements AddUserContract {
                                         mainAxisSize: MainAxisSize.min,
                                         children: [
                                           Text(
-                                            "Owners",
+                                            "SET LEVEL",
                                             style: TextStyle(
                                                 fontWeight: FontWeight.bold,
                                                 fontSize: 16),
@@ -490,9 +490,7 @@ class _AddUserPageState extends State<AddUserPage> implements AddUserContract {
                                                         ),
                                                         Text(index == 0
                                                             ? "Member"
-                                                            : index == 1
-                                                            ? "Owner"
-                                                            : "Admin")
+                                                            : "Owner")
                                                       ],
                                                     ),
                                                   ),
@@ -502,7 +500,7 @@ class _AddUserPageState extends State<AddUserPage> implements AddUserContract {
                                                 )
                                               ],
                                             ),
-                                            itemCount: 3,
+                                            itemCount: 2,
                                           ),
                                           Row(
                                             mainAxisAlignment: MainAxisAlignment.end,
@@ -522,10 +520,10 @@ class _AddUserPageState extends State<AddUserPage> implements AddUserContract {
                                                       mPresenter
                                                           .onSetOwner(widget.user.id, widget.user.teamId);
                                                     }
-                                                    if (_mIndex == 2) {
-                                                      mPresenter
-                                                          .onSetAdmin(widget.user.id, widget.user.teamId.toString());
-                                                    }
+                                                    // if (_mIndex == 2) {
+                                                    //   mPresenter
+                                                    //       .onSetAdmin(widget.user.id, widget.user.teamId.toString());
+                                                    // }
                                                   }
                                                 },
                                                 child: Text("OK"),
