@@ -530,6 +530,7 @@ class _DetailAdminPageState extends State<DetailAdminPage> implements Inspection
                     : InkWell(
                         onTap: () {
                           Utils.showLoadingDialog(context);
+                          print("------------- ${statusEditing} ------- ${widget.detail.status}");
                           if(statusEditing != widget.detail.status){
                             mPresenter.onUpdateStatus(statusEditing, widget.detail.id);
                           }
@@ -769,9 +770,13 @@ class _DetailAdminPageState extends State<DetailAdminPage> implements Inspection
         _list.add(response.data[i]);
       }
     }
+    for(int i = 0; i < _list.length; i++){
+      if(_list[i].id == widget.detail.ownerId){
+        owner = _list[i];
+      }
+    }
     setState(() {
       mOwner = _list;
-      owner = _list[0];
     });
   }
 }
