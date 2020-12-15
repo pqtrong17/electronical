@@ -14,7 +14,7 @@ class MemberRepositoryImpl implements MemberRepository{
     final body = request.toJson();
     final responseJson = await http.put(
         NetworkConfig.SERVER_URL + NetworkConfig.ADD_WORK_DETAIL_MEMBER,
-        body: body,
+        body: jsonEncode(body),
         headers: header);
     return;
   }
